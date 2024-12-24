@@ -17,3 +17,8 @@ img {
   height: 10%;
   object-fit: cover;
 }
+
+button {
+  width: 50px;
+  height: 25px;
+}

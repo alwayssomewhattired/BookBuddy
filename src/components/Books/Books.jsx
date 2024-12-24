@@ -2,26 +2,69 @@
 
 import { useGetBooksQuery } from "./BooksSlice";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-export default function Books() {
-  const { data, isSuccess, isLoading } = useGetBooksQuery();
+export default function Books({ setBookId }) {
+  const { data: myData, isSuccess, isLoading } = useGetBooksQuery();
+  const [books, setBooks] = useState([]);
+  const navigate = useNavigate();
+  const [name, setName] = useState("");
 
-  console.log(data);
+  let newData = [];
 
-  const books = data.books;
+  useEffect(() => {
+    console.log(`is this a success ${isSuccess}`);
+    if (isSuccess) {
+      setBooks(myData.books);
+      console.log(books);
+      const newData = myData.title;
+    }
+  }, [myData]);
 
   return (
     <ul>
-      {books.map((b) => (
-        <li key={b.id}>
-          <h3>
-            {b.title} by {b.author}
-          </h3>
-          <figure>
-            <img src={b.coverimage} alt="b.name" />
-          </figure>
-        </li>
-      ))}
+      <div>
+        <Link to="/login">Login</Link>
+      </div>
+      <div>
+        <Link to="/register">Register</Link>
+      </div>
+      <Link to="/account">Account</Link>
+      <div>
+        <form>
+          <input
+            type="text"
+            placeholder="search"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </form>
+      </div>
+      {books
+        .filter((item) => {
+          return name.toLowerCase() == ""
+            ? item
+            : item.title.toLowerCase().includes(name);
+        })
+        .map((b) => (
+          <li key={b.id}>
+            <h3>
+              {b.title} by {b.author}
+            </h3>
+            <figure>
+              <img src={b.coverimage} alt="b.name" />
+            </figure>
+            <button
+              onClick={() => {
+                setBookId(b.id);
+                navigate("/book");
+              }}
+            >
+              Select
+            </button>
+          </li>
+        ))}
     </ul>
   );
 }
