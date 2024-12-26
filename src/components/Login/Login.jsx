@@ -2,13 +2,29 @@
 
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useAddLoginMutation } from "./LoginSlice";
+import { useNavigate } from "react-router-dom";
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [createLoginMutation, { isLoading, error }] = useAddLoginMutation();
+  const navigate = useNavigate();
 
-  function loginInfo() {
-    console.log("hi");
-  }
+  const loginInfo = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await createLoginMutation({
+        email,
+        password,
+      }).unwrap();
+      console.log(response.token);
+      localStorage.setItem("token", response.token);
+      navigate("/Account");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -33,6 +49,9 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </label>
+        <button>Login</button>
+        {isLoading && <output>Uploading User information...</output>}
+        {error && <output>No user found{error.message}</output>}
       </form>
     </>
   );

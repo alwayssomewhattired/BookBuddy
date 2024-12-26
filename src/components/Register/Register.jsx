@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAddUserMutation } from "./RegisterSlice";
 // import { useNavigate } from "react-router-dom";
 
-export default function Register({ token, setToken }) {
+export default function Register() {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
@@ -23,7 +23,6 @@ export default function Register({ token, setToken }) {
         password,
       }).unwrap();
       console.log(response.token);
-      // setToken(response.token);
       localStorage.setItem("token", response.token);
       navigate("/Account");
     } catch (error) {

@@ -13,7 +13,17 @@ const accountApi = api.injectEndpoints({
       }),
       providesTags: ["User"],
     }),
+    returns: builder.mutation({
+      query: ({ token, bookId }) => ({
+        url: `/reservations/${bookId}`,
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetAccountQuery } = accountApi;
+export const { useGetAccountQuery, useReturnsMutation } = accountApi;

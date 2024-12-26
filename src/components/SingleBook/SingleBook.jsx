@@ -9,7 +9,8 @@ export default function SingleBook({ bookId }) {
   const token = localStorage.getItem("token");
 
   const { data: myData, isLoading } = useGetBooksQuery();
-  const [createCheckOutMutation, { data: thatData }] = useCheckOutMutation();
+  const [createCheckOutMutation, { data: thatData, error }] =
+    useCheckOutMutation();
   const navigate = useNavigate();
 
   function singleBook() {
@@ -61,6 +62,7 @@ export default function SingleBook({ bookId }) {
         <h2>Selected Book</h2>
         {$details};<button onClick={() => navigate("/")}>Home</button>
         <button onClick={checkoutBook}>CheckOut</button>
+        {error && <output>Need Account to Checkout{error.message}</output>}
       </aside>
     );
   }
