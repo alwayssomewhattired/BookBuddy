@@ -17,20 +17,15 @@ export default function Account() {
     if (isSuccess) {
       setAcnt([myData]);
       setBookDet(myData.books);
-      // setBookId(myData.books[0].id);
     }
   }, [myData]);
 
-  useEffect(() => {
-    if (bookId != "hi" && isSuccess) setBookId(myData.books[0].id);
-  }, [myData]);
-
-  function returnsBook() {
-    createReturnsMutation({ token, bookId });
-    if (bookDet.length === 0) {
-      setBookId("hi");
+  function returnsBook(a) {
+    if (bookDet.length != 0) {
+      createReturnsMutation({ token, a });
     }
   }
+
 
   let $details;
   let bookDetails;
@@ -40,7 +35,6 @@ export default function Account() {
   } else if (isLoading) {
     $details = <p>Loading User Information</p>;
   } else {
-    console.log(bookDet);
     $details = acnt.map((item) => (
       <li key={item}>
         <h3> firstname: {item.firstname}</h3>
@@ -50,6 +44,7 @@ export default function Account() {
     ));
     bookDetails = bookDet.map((ajx) => (
       <li key={ajx}>
+        <button onClick={() => returnsBook(ajx.id)}>Return</button>
         <h3> Books: {ajx.title} </h3>
       </li>
     ));
@@ -64,9 +59,6 @@ export default function Account() {
       <h2>Account</h2>
       {$details}
       {bookDetails}
-      <div>
-        <button onClick={returnsBook}>Return</button>
-      </div>
       <Link to="/">Home</Link>
     </ul>
   );

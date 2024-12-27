@@ -14,8 +14,8 @@ const accountApi = api.injectEndpoints({
       providesTags: ["User"],
     }),
     returns: builder.mutation({
-      query: ({ token, bookId }) => ({
-        url: `/reservations/${bookId}`,
+      query: ({ token, a }) => ({
+        url: `/reservations/${a}`,
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
